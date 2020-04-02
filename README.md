@@ -1,1 +1,1 @@
-# TTCSDL và những con giời phen của tôi :v
+# TTCSDL và những phen của tôi :v
