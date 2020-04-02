@@ -8,6 +8,25 @@ GO
 -- Insert KESACH
 
 -- Insert THELOAI
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1110','Truyện Ngắn - Tản Văn');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1111','Tiểu Thuyết ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1112','Chính Trị - Pháp Luật ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1113','Văn Học Nghệ Thuật ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1114','Khoa Học Công Nghệ ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1110','Sách Công Nghệ Thông Tin');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1111','Sách Giáo Khoa - Giáo Trình ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1112','Sách Học Ngoại Ngữ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1113','Sách Kiến Thức Tổng Hợp');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1114','Sách Tham Khảo');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1110','Sách Thường Thức - Gia Đình');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1111','Sách Tâm lý - Giới tính');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1112','Sách Y Học');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1113','Sách kỹ năng sống');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1114','Sách kinh tế ');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1110','Sách thiếu nhi');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1111','Sách Lịch sử');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1112','Sách Văn Hóa - Địa Lý - Du Lịch');
+INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1113','Sách Tôn Giáo - Tâm Linh');
 
 -- Insert KHO
 INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('221','Kho 1A','Phòng 301 , Tầng 3, Tòa H2 ');
