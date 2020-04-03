@@ -3,9 +3,30 @@ USE QuanLyThuVien
 GO
 
 -- Insert TACGIA
-
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18576','Minh Ngọc ');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18577','Huỳnh Khải Vệ ');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18578','Phạm Anh Thư ');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18579','Nguyễn Nhật Ánh');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18580','Ki Ju Lee');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18581','John C. Maxwell');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18582','Tô Văn Ban');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18583','Phạm Văn Ất');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18584','Lương Duyên Bình');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18585','Robin Sharma');
+INSERT INTO TACGIA (MaTacGia,TenTacGia) VALUES ('18586','Paulo Coelho');
 
 -- Insert KESACH
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1110','Kệ Sách A ');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1111','Kệ Sách B ');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1112','Kệ Sách C1');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1113','Kệ Sách C2');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1114','Kệ Sách E');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1115','Kệ Sách F');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1116','Kệ Sách G');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1117','Kệ Sách H');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1118','Kệ Sách I');
+INSERT INTO KESACH (MaKeSach,TenKeSach) VALUES ('1119','Kệ Sách K');
+
 
 -- Insert THELOAI
 INSERT INTO THELOAI (MaKeSach,TenTheLoai) VALUES ('1110','Truyện Ngắn - Tản Văn');
@@ -34,6 +55,11 @@ INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('222','Kho 1B','Phòng 302 , T�
 INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('331','Kho 2A','Phòng 401 , Tầng 4, Tòa H2 ');
 INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('332','Kho 2B ','Phòng 402 , Tầng 4, Tòa H2 ');
 INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('433','Kho C ','Phòng 403,Tầng 4 ,Tòa H2 ');
+INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('1','Kho X1','Tầng 1, Thư viện Khu B, HVKTQS');
+INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('2','Kho X2','Tầng 2, Thư viện Khu B, HVKTQS');
+INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('3','Kho V1','Phòng 101, Thư viện cs Vĩnh Yên, HVKTQS');
+INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('4','Kho V2','Phòng 102, Thư viện cs Vĩnh Yên, HVKTQS');
+INSERT INTO KHO (MaKho,TenKho,DiaChiKho) VALUES ('5','Kho V3','Phòng 103, Thư viện cs Vĩnh Yên, HVKTQS');
 
 -- Insert Nhà cung cấp - NCC
 INSERT INTO NCC (MaNCC,TenNCC,DiaChiNCC,SDT_NCC) VALUES ('4441','Skybooks','Số 50 đường 5, TTF 361 An Dương, Tây Hồ, Hà Nội','437172838');
