@@ -192,6 +192,26 @@ INSERT INTO THETHUVIEN (MaThe,TrangThai,NgayHetHan,SoLanGiaHan) VALUES ('1815021
 
 
 -- Insert VIPHAM
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7878','Mất Sách ','','17150023');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7879','Giữ sách quá hạn','','16150020');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7890','Mất, hỏng tem mã vạch ','','18150465');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7891','Rách bìa, bung bìa ','','18150673');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7892','Bẩn sách','','15150511');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7893','Mất Sách ','','16150190');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7894','Rách trang','','18150198');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7895','Rách trang','','18150246');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7896','Giữ sách quá hạn','','15151183');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7897','Giữ sách quá hạn','','18150179');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7898','Giữ sách quá hạn','','15150015');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7899','Giữ sách quá hạn','','18150234');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7900','Giữ sách quá hạn','','17150132');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7901','Giữ sách quá hạn','','18150142');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7902','Mất mã vạch','','17150123');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7903','Mất Sách ','','18150246');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7904','Mất Sách ','','18150248');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7905','Giữ sách quá hạn','','16150100');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7906','Giữ sách quá hạn','','17150085');
+INSERT INTO VIPHAM (MaViPham,TenViPham,GhiChu,MaThe) VALUES ('7907','Giữ sách quá hạn','','16151466');
 
 -- Insert DOCGIA
 INSERT INTO DOCGIA (MaDocGia,HoTenDocGia,Lop,NgaySinh,DiaChi,SDT,MaThe) VALUES ('1111110','Nguyễn Vũ hải Anh ','KTPM16','4/13/1999','Hà Nội','367069763','17150001');
@@ -280,8 +300,56 @@ INSERT INTO DOCGIA (MaDocGia,HoTenDocGia,Lop,NgaySinh,DiaChi,SDT,MaThe) VALUES (
 INSERT INTO DOCGIA (MaDocGia,HoTenDocGia,Lop,NgaySinh,DiaChi,SDT,MaThe) VALUES ('1111193','NGUYỄN XUÂN SƠN','DTVT17','9/5/2000','Thanh Hóa','982191252','18150212');
 
 -- Insert DAUSACH
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('90','Mình Về Hà Nội Để Thương Nhau','551');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('91','Tiếc Rằng Mình Chẳng Đợi Được Nhau ','551');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('92','Có Một Cô Gái Thầm Yêu Anh ','552');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('93','Tôi Thấy Hoa Vàng Trên Cỏ Xanh ','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('94','Nhiệt Độ Ngôn Ngữ ','555');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('95','Cô Gái Đến Từ Hôm Qua','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('96','Mắt Biếc','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('97','Cho Tôi Xin Một Vé Đi Tuổi Thơ','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('98','Có Hai Con Mèo Ngồi Bên Cửa Sổ','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('99','Tôi Là Bêtô','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('100','Ngồi Khóc Trên Cây: Truyện Dài','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('101',' 15 Nguyên Tắc Vàng Về Phát Triển Bản Thân','571');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('102','Thái Độ 101 – Những Điều Nhà Lãnh Đạo Cần Biết','571');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('103','Trở Thành Người Ảnh Hưởng','571');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('104','Mối Quan Hệ 101 – Những Điều Nhà Lãnh Đạo Cần Biết','571');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('105','Kỹ thuật lập trình C cơ bản và nâng cao','562');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('106','Xác suất thống kê','558');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('107','Giải tích 1','558');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('108','Giải tích 2','558');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('109','Lập trình hướng đối tượng','562');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('110','Vật Lý đại cương 1','558');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('111','Vật Lý đại cương 2','558');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('112','Đời ngắn đừng ngủ dài','553');
+INSERT INTO DAUSACH (MaDauSach,TenDauSach,MaNXB) VALUES ('113','Nhà giả kim','565');
 
 -- Insert SACH_TACGIA
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('90','18576');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('91','18577');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('92','18578');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('93','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('94','18580');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('95','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('96','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('97','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('98','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('99','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('100','18579');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('101','18580');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('102','18580');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('103','18580');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('104','18580');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('105','18583');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('106','18582');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('107','18582');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('108','18582');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('109','18580');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('110','18584');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('111','18584');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('112','18585');
+INSERT INTO SACH_TACGIA (MaDauSach,MaTacGia) VALUES ('113','18586');
 
 -- Insert PHIEUMUON
 
