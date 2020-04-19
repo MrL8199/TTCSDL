@@ -2,19 +2,36 @@ USE QuanLyThuVien
 
 GO
 
+-- Thêm độc giả:
+-- Logic: Thêm thẻ thư viện, sau đó thêm thông tin độc giả với mã thẻ thư viện vừa thêm.
+-- Insert rows into table 'THETHUVIEN'
+INSERT INTO THETHUVIEN
+( -- columns to insert data into
+ [MaThe], [TrangThai], [SoLanGiaHan], [NgayHetHan]
+)
+VALUES
+( -- first row: values for the columns in the list above
+ Column1_Value, Column2_Value, Column3_Value
+),
+( -- second row: values for the columns in the list above
+ Column1_Value, Column2_Value, Column3_Value
+)
+-- add more rows here
+GO
+
 -- xem tất cả thông tin thẻ thư viện/độc giả
 SELECT * FROM THETHUVIEN
-FULL JOIN DOCGIA ON DOCGIA.MaThe = THETHUVIEN.MaThe
+INNER JOIN DOCGIA ON DOCGIA.MaThe = THETHUVIEN.MaThe
 
 -- tìm kiếm độc giả theo mã thẻ
 SELECT * FROM THETHUVIEN
 FULL JOIN DOCGIA ON DOCGIA.MaThe = THETHUVIEN.mathe
 WHERE THETHUVIEN.MaThe LIKE '%171500%'
 
--- tìm kiếm độc giả theo tên:
+-- tìm kiếm độc giả có tên LỰc:
 SELECT * FROM THETHUVIEN
 FULL JOIN DOCGIA ON DOCGIA.MaThe = THETHUVIEN.mathe
-WHERE DOCGIA.HoTenDocGia LIKE '%L%'
+WHERE DOCGIA.HoTenDocGia LIKE N'%Lực%'
 
 -- Sửa địa chỉ độc giả có mã thẻ 17150150:
 UPDATE DOCGIA
@@ -22,8 +39,31 @@ SET [DiaChi] = N'HÀ NỘI'
 WHERE DOCGIA.MaThe = '17150150'
 
 -- xóa độc giả có mã thẻ 17150003
+-- Notice: Khi xóa 1 độc giả (thẻ thư viện) ta phải
+-- xóa những trường mà có liên kết khóa ngoại với bảng docgia/thethuvien
+-- khi ấy sẽ làm mất dữ liệu đang có,
+-- vậy nên ta sẽ set null cho các giá trị.
+-- Example: delete thethuvien where thethuvien.mathe = '17150003'
+-- -> delete trường dữ liệu thẻ thư viện đó, set null tại mathe ở các bảng: PhieuMuon, PHieutra
+-- -> delete trường dữ liệu có mathe = 17150003 ở bảng docgia, ViPham
+UPDATE PHIEUMUON
+SET [MaThe] = N''
+WHERE PHIEUMUON.MaThe = '17150003'
+GO
+UPDATE PHIEUTRA
+SET [MaThe] = N''
+WHERE PHIEUTRA.MaThe = '17150003'
+GO
+DELETE DOCGIA
+WHERE DOCGIA.MaThe = '17150003'
+GO
+DELETE VIPHAM
+WHERE VIPHAM.MaThe = '17150003'
+GO
 DELETE THETHUVIEN
 WHERE THETHUVIEN.MaThe = '17150003'
+GO
+
 
 SELECT * FROM PHIEUMUON
 INNER JOIN THETHUVIEN ON PHIEUMUON.MaThe = THETHUVIEN.MaThe
