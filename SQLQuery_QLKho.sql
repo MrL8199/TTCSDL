@@ -2,9 +2,10 @@
 
 GO
 
--- Tìm kiếm thông tin nhân viên có Mã nhân viên là '2203'
+-- Tìm kiếm thông tin nhân viên có tên nhân viên là 'Nguyễn Hữu Đa'
 select * from NHANVIEN
-where NHANVIEN.MaNhanVien like '2203'
+where NHANVIEN.TenNhanVien like N'%Nguyễ%'
+
 
 -- Sửa thông tin nhân viên có mã là '2209'
 UPDATE NHANVIEN
@@ -57,3 +58,18 @@ select * from PHIEUNHAP
 inner join KHO on KHO.MaKho = PHIEUNHAP.MaKho 
 where KHO.MaKho = 2
 and PHIEUNHAP.NgayNhap like '2020-02%'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
