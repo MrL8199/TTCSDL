@@ -128,10 +128,8 @@ CREATE TABLE CT_PHIEUTRA(
 
 CREATE TABLE PHIEUKIEMKE
 (
-    MaPhieuKiemKe INT NOT NULL PRIMARY KEY,
+    MaPhieuKiemKe INT identity(1,1) NOT NULL PRIMARY KEY,
     NgayKiemKe DATE,
-    SoLuongDau INT,
-    SoLuongCuoi INT,
     MaKho INT FOREIGN KEY REFERENCES KHO(MaKho)
 )
 
@@ -158,19 +156,33 @@ CREATE TABLE QUANLYTRASACH
 
 CREATE TABLE PHIEUNHAP
 (
-    MaKho INT FOREIGN KEY REFERENCES KHO(MaKho),
-    MaNCC INT FOREIGN KEY REFERENCES NCC(MaNCC),
+	MaPN int identity(1,1) not null Primary key,
     NgayNhap DATE,
-    SoLuong INT,
-    MaDauSach INT FOREIGN KEY REFERENCES DAUSACH(MaDauSach),
-    PRIMARY KEY(MaKho, MaNCC)
+)
 
+CREATE TABLE CT_PHIEUNHAP
+(
+	MaCTPN int identity(1,1) not null primary key,
+	MaPN int FOREIGN KEY REFERENCES PHIEUNHAP(MaPN),
+	MaKho INT FOREIGN KEY REFERENCES KHO(MaKho),
+    MaNCC INT FOREIGN KEY REFERENCES NCC(MaNCC),
+	SoLuong INT,
+    MaDauSach INT FOREIGN KEY REFERENCES DAUSACH(MaDauSach)
 )
 
 CREATE TABLE PHIEUXUAT
 (
-    MaKho INT FOREIGN KEY REFERENCES KHO(MaKho),
-    MaKeSach INT FOREIGN KEY REFERENCES KESACH(MaKeSach),
+	MaPX int identity(1,1) not null primary key,
     NgayXuat DATE
-        PRIMARY KEY(MaKho, MaKeSach)
+)
+
+
+CREATE TABLE CT_PHIEUXUAT
+(	
+	MaCTPX int identity(1,1) not null primary key,
+	MaPX int foreign key references PHIEUXUAT(MaPX),
+	MaKho INT FOREIGN KEY REFERENCES KHO(MaKho),
+    MaKeSach INT FOREIGN KEY REFERENCES KESACH(MaKeSach),
+	SoLuong int,
+	MaDauSach int foreign key references DAUSACH(MaDauSach)
 )
