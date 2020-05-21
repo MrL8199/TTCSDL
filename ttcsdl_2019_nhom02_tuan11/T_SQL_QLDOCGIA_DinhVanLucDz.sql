@@ -11,7 +11,7 @@ GO
 
 
 -- view Danh sách Độc giả vi phạm
-CREATE VIEW DOCGIA_VIEW
+CREATE VIEW DOCGIAVP_VIEW
 AS
     SELECT THETHUVIEN.MaThe, DOCGIA.HoTenDocGia, DOCGIA.NgaySinh, DOCGIA.Lop, VIPHAM.TenViPham, VIPHAM.GhiChu
     FROM DOCGIA, THETHUVIEN
@@ -192,11 +192,11 @@ BEGIN
         SELECT THETHUVIEN.MaThe, DOCGIA.HoTenDocGia, DOCGIA.NgaySinh, DOCGIA.Lop, DOCGIA.SDT, DOCGIA.DiaChi, THETHUVIEN.TrangThai, THETHUVIEN.NgayHetHan
         FROM THETHUVIEN
             INNER JOIN DOCGIA ON DOCGIA.MaThe = THETHUVIEN.mathe
-        WHERE DOCGIA.HoTenDocGia LIKE N'%'+@TenDG+'%'
+        WHERE DOCGIA.HoTenDocGia LIKE '%'+@TenDG+'%'
     END
 END
 GO
-EXEC TimDG '','Lực','1'
+EXEC TimDG '1715',N'lực','1'
 GO
 
 
