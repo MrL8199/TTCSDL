@@ -13,7 +13,7 @@ GO
 -- view Danh sách Độc giả vi phạm
 CREATE VIEW DOCGIAVP_VIEW
 AS
-    SELECT THETHUVIEN.MaThe, DOCGIA.HoTenDocGia, DOCGIA.NgaySinh, DOCGIA.Lop, VIPHAM.TenViPham, VIPHAM.GhiChu
+    SELECT VIPHAM.MaViPham, THETHUVIEN.MaThe, DOCGIA.HoTenDocGia, DOCGIA.NgaySinh, DOCGIA.Lop, VIPHAM.TenViPham, VIPHAM.GhiChu
     FROM DOCGIA, THETHUVIEN
         INNER JOIN VIPHAM ON VIPHAM.MaThe = THETHUVIEN.mathe
     WHERE DOCGIA.MaThe = THETHUVIEN.MaThe
@@ -56,7 +56,8 @@ CREATE PROC ThemDG
     @DiaChi nvarchar(200),
     @Lop nvarchar(100),
     @SDT int,
-    @NgaySinh date
+    @NgaySinh date,
+    @NgayHetHan date
 )
 AS
 BEGIN
@@ -72,7 +73,7 @@ BEGIN
     INSERT INTO THETHUVIEN
         (MaThe,TrangThai,NgayHetHan,SoLanGiaHan)
     VALUES
-        (@i, N'Còn Hạn', DATEADD(year, 1, GETDATE()), '0');
+        (@i, N'Còn Hạn', @NgayHetHan, '0');
     IF((SELECT COUNT(MaDocGia)
     FROM DOCGIA) = 0)
 		SET @temp=0
@@ -87,7 +88,7 @@ BEGIN
         (@j, @TenDG, @Lop, @NgaySinh, @DiaChi, @SDT, @i);
 END
 GO
-EXEC ThemDG N'Đào Bá Lộc', [Cầu Giấy, Hà Nội], 'CNTT17','0369669321', '05/02/2000'
+EXEC ThemDG N'Đào Bá Lộc', [Cầu Giấy, Hà Nội], 'CNTT17','0369669321', '05/02/2000', '05/02/2021'
 GO
 
 -- Sửa độc giả
@@ -98,16 +99,20 @@ CREATE PROC SuaDG
     @DiaChi nvarchar(200),
     @Lop nvarchar(100),
     @SDT int,
-    @NgaySinh date
+    @NgaySinh date,
+    @NgayHetHan date
 )
 AS
 BEGIN
     UPDATE DOCGIA
 	SET HoTenDocGia=@TenDG, DiaChi=@DiaChi, Lop=@Lop, SDT=@SDT, NgaySinh=@NgaySinh
-	WHERE MaThe = @Ma
+	WHERE MaThe = @Ma;
+    UPDATE THETHUVIEN
+    SET NgayHetHan=@NgayHetHan
+    WHERE MaThe = @Ma;
 END
 GO
-EXEC SuaDG '17150123',N'Đào Bá Lộc', [Cầu Giấy, Hà Nội], 'CNTT17','0369669321', '05/02/2000'
+EXEC SuaDG '17150123',N'Đào Bá Lộc', [Cầu Giấy, Hà Nội], 'CNTT17','0369669321', '05/02/2000', '05/02/2021'
 GO
 -- Xóa độc giả
 -- Vì lý do ràng buộc dữ liệu nên có thể:
