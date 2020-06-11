@@ -1,9 +1,59 @@
-﻿-- Thêm Phieu Muon
+﻿use QuanLyThuVien
+go
+--  Show phieumuon
+create view PhieuMuon_View as
+select PHIEUMUON.MaPhieuMuon as 'Mã Phiếu Mượn', DOCGIA.MaThe  'Mã Thẻ', PHIEUMUON.NgayMuon 'Ngày Mượn', PHIEUMUON.NgayHanTra 'Ngày Hẹn Trả',
+CT_PHIEUMUON.MaCuonSach 'Mã Cuốn Sách' ,QUANLYMUONSACH.MaNhanVien 'Mã Nhân Viên' 
+from PHIEUMUON,CT_PHIEUMUON, QUANLYMUONSACH, DOCGIA, CUONSACH
+where PHIEUMUON.MaThe = DOCGIA.MaThe
+and   PHIEUMUON.MaPhieuMuon =  CT_PHIEUMUON.MaPhieuMuon
+and   PHIEUMUON.MaPhieuMuon =  QUANLYMUONSACH.MaPhieuMuon
+and   CT_PHIEUMUON.MaCuonSach = CUONSACH.MaCuonSach
+and   CUONSACH.TinhTrangCuonSach = N'Đã mượn'
+group by PHIEUMUON.MaPhieuMuon , DOCGIA.MaThe , PHIEUMUON.NgayMuon , PHIEUMUON.NgayHanTra ,
+CT_PHIEUMUON.MaCuonSach  ,QUANLYMUONSACH.MaNhanVien 
+
+go
+select * from PhieuMuon_View
+
+
+select MaCuonSach  from CUONSACH where TinhTrangCuonSach = N'Chưa mượn'
+
+go
+
+-- Show phiếu trả
+create view PhieuTra_View as
+select PHIEUTRA.MaPHIEUTRA as 'Mã Phiếu Trả', DOCGIA.MaThe  'Mã Thẻ', PHIEUTRA.NgayTra 'Ngày Trả',
+CT_PHIEUTRA.MaCuonSach 'Mã Cuốn Sách', QUANLYTRASACH.MaNhanVien 'Mã Nhân Viên' 
+from PHIEUTRA,CT_PHIEUTRA, QUANLYTRASACH, DOCGIA, CUONSACH
+where PHIEUTRA.MaThe = DOCGIA.MaThe
+and   PHIEUTRA.MaPHIEUTRA =  CT_PHIEUTRA.MaPHIEUTRA
+and   PHIEUTRA.MaPHIEUTRA =  QUANLYTRASACH.MaPHIEUTRA
+and   CT_PHIEUTRA.MaCuonSach = CUONSACH.MaCuonSach
+and   CUONSACH.TinhTrangCuonSach = N'Chưa mượn'
+group by PHIEUTRA.MaPHIEUTRA , DOCGIA.MaThe  , PHIEUTRA.NgayTra ,
+CT_PHIEUTRA.MaCuonSach , QUANLYTRASACH.MaNhanVien 
+go
+select * from PhieuTra_View
+go
+-- Thoong tin sach
+
+select TenSach, SoTrang,TinhTrangCuonSach,MaDauSach,MaKeSach 
+from CUONSACH 
+
+go
+select * from CUONSACH
+go
+-- Các chức năng of form Phiếu Mượn Sách
+-- Chức năng mượn
+
 CREATE PROC ThemPhieuMuon
     (
     @NgayMuon datetime,
     @NgayHanTra datetime,
-    @MaThe int
+    @MaThe int,
+	@MaCuonSach int,
+	@MaNhanVien int
 )
 AS
 BEGIN
@@ -21,36 +71,27 @@ BEGIN
     VALUES
         (@i, @NgayMuon, @NgayHanTra, @MaThe);
 		--Relate-CuonSach
-    IF((SELECT COUNT(MaCuonSach)
-    FROM CT_PHIEUMUON) = 0)
-		SET @temp=0
-	ELSE 
-		SET @temp=( SELECT MAX(CAST(MaCuonSach AS INT))
-    FROM CT_PHIEUMUON )
-    SET @temp=@temp+1
-    SET @j=@temp
+    
     INSERT INTO CT_PHIEUMUON
         ( MaCuonSach,MaPhieuMuon)
     VALUES
-        (@j, @i);
+        (@MaCuonSach, @i);
 		--Relate-NhanVien
-    IF((SELECT COUNT(MaNhanVien)
-    FROM QUANLYMUONSACH) = 0)
-		SET @temp=0
-	ELSE 
-		SET @temp=( SELECT MAX(CAST(MaNhanVien AS INT))
-    FROM QUANLYMUONSACH )
-    SET @temp=@temp+1
-    SET @k=@temp
+    
     INSERT INTO QUANLYMUONSACH
         ( MaNhanVien,MaPhieuMuon)
     VALUES
-        (@k, @i);
+        (@MaNhanVien, @i);
+	UPDATE CUONSACH
+	SET TinhTrangCuonSach = N'Đã mượn'
+	WHERE MaCuonSach = @MaCuonSach
 END
 GO
+exec ThemPhieuMuon '2020/05/06','2020/06/09','17150150', '10001072', '2204'
+go
 
 -- Sửa Phieu Muon
-CREATE PROC SuaPhieuMuon
+create PROC SuaPhieuMuon
     (
     @Ma int,
     @NgayMuon datetime,
@@ -58,195 +99,269 @@ CREATE PROC SuaPhieuMuon
     @MaThe int,
 
 	@MaCuonSach int,
-	@MaNhanVien int
+	@MaNhanVien int,
+	@MaCuonSachNew int
 )
 AS
 BEGIN
-    UPDATE PhieuMuon
-	SET NgayMuon=@NgayMuon, NgayHanTra=@NgayHanTra, @MaThe=@MaThe
-	WHERE MaPhieuMuon = @Ma
-
 	UPDATE CT_PHIEUMUON
-	SET  MaCuonSach=@MaCuonSach
-	WHERE MaPhieuMuon = @Ma
+	SET  MaCuonSach=@MaCuonSachNew
+	WHERE MaPhieuMuon = @Ma and MaCuonSach = @MaCuonSach
 
 	UPDATE QUANLYMUONSACH
 	SET  MaNhanVien=@MaNhanVien
 	WHERE MaPhieuMuon = @Ma
-END
 
+    UPDATE PhieuMuon
+	SET NgayMuon=@NgayMuon, NgayHanTra=@NgayHanTra, MaThe=@MaThe
+	WHERE MaPhieuMuon = @Ma
+
+	UPDATE CUONSACH
+	SET TinhTrangCuonSach = N'Đã mượn'
+	WHERE MaCuonSach = @MaCuonSachNew
+
+	UPDATE CUONSACH
+	SET TinhTrangCuonSach = N'Chưa mượn'
+	WHERE MaCuonSach = @MaCuonSach
+END
 GO
--- Xóa Phieu Muon
-CREATE PROC XoaPhieuMuon
+-- Xoa phiếu mượn
+create PROC XoaPhieuMuon
     (
     @Ma int
 )
 AS
 BEGIN
-    DELETE FROM PHIEUMUON
-    WHERE MaPhieuMuon = @Ma
 
 	DELETE FROM CT_PHIEUMUON
     WHERE MaPhieuMuon = @Ma
 
 	DELETE FROM QUANLYMUONSACH 
     WHERE MaPhieuMuon = @Ma
+
+    DELETE FROM PHIEUMUON
+    WHERE MaPhieuMuon = @Ma
+
+	
 END
 GO
-
--- Tìm kiếm
-CREATE PROC TimPhieuMuon
+-- Tìm kiếm Phiếu Mượn
+create PROC TimPhieuMuon
     (
     @MaThe varchar(20),
-    @NgayMuon datetime,
+    @NgayMuon varchar(20),
     @TypeSearch int
---type == 0: search theo mã thẻ || == 1: seatch theo ngay muon              
 )
 AS
 BEGIN
     IF (@TypeSearch = 0)
 BEGIN
         -- tìm kiếm độc giả theo mã thẻ
-        SELECT PHIEUMUON.MaPhieuMuon,NgayMuon,NgayHanTra,MaCuonSach,MaNhanVien
-        FROM PHIEUMUON
-            INNER JOIN CT_PHIEUMUON ON CT_PHIEUMUON.MaPhieuMuon = PHIEUMUON.MaPhieuMuon
-			INNER JOIN QUANLYMUONSACH ON QUANLYMUONSACH.MaPhieuMuon = PHIEUMUON.MaPhieuMuon
-        WHERE PHIEUMUON.MaThe LIKE '%'+@MaThe+'%'
-
+		
+       select PHIEUMUON.MaPhieuMuon as 'Mã Phiếu Mượn', DOCGIA.MaThe  'Mã Thẻ', PHIEUMUON.NgayMuon 'Ngày Mượn', PHIEUMUON.NgayHanTra 'Ngày Hẹn Trả',
+		CT_PHIEUMUON.MaCuonSach 'Mã Cuốn Sách' ,QUANLYMUONSACH.MaNhanVien 'Mã Nhân Viên' 
+		from PHIEUMUON,CT_PHIEUMUON, QUANLYMUONSACH, DOCGIA, CUONSACH
+		where PHIEUMUON.MaThe = DOCGIA.MaThe
+		and   PHIEUMUON.MaPhieuMuon =  CT_PHIEUMUON.MaPhieuMuon
+		and   PHIEUMUON.MaPhieuMuon =  QUANLYMUONSACH.MaPhieuMuon
+		and   CT_PHIEUMUON.MaCuonSach = CUONSACH.MaCuonSach
+		and   CUONSACH.TinhTrangCuonSach = N'Đã mượn'
+		and   PHIEUMUON.MaThe LIKE '%'+@MaThe+'%'
+		group by PHIEUMUON.MaPhieuMuon , DOCGIA.MaThe , PHIEUMUON.NgayMuon , PHIEUMUON.NgayHanTra ,
+		CT_PHIEUMUON.MaCuonSach  ,QUANLYMUONSACH.MaNhanVien 
+        
     END
 ELSE
 BEGIN
-        -- tìm kiếm độc giả có tên @NgayMuon:
-        SELECT PHIEUMUON.MaPhieuMuon,NgayMuon,NgayHanTra,MaCuonSach,MaNhanVien
-        FROM PHIEUMUON
-            INNER JOIN CT_PHIEUMUON ON CT_PHIEUMUON.MaPhieuMuon = PHIEUMUON.MaPhieuMuon
-			INNER JOIN QUANLYMUONSACH ON QUANLYMUONSACH.MaPhieuMuon = PHIEUMUON.MaPhieuMuon
-        WHERE PHIEUMUON.MaPhieuMuon = @NgayMuon
+        -- tìm kiếm độc giả có  @NgayMuon:
+        select PHIEUMUON.MaPhieuMuon as 'Mã Phiếu Mượn', DOCGIA.MaThe  'Mã Thẻ', PHIEUMUON.NgayMuon 'Ngày Mượn', PHIEUMUON.NgayHanTra 'Ngày Hẹn Trả',
+		CT_PHIEUMUON.MaCuonSach 'Mã Cuốn Sách' ,QUANLYMUONSACH.MaNhanVien 'Mã Nhân Viên' 
+		from PHIEUMUON,CT_PHIEUMUON, QUANLYMUONSACH, DOCGIA, CUONSACH
+		where PHIEUMUON.MaThe = DOCGIA.MaThe
+		and   PHIEUMUON.MaPhieuMuon =  CT_PHIEUMUON.MaPhieuMuon
+		and   PHIEUMUON.MaPhieuMuon =  QUANLYMUONSACH.MaPhieuMuon
+		and   CT_PHIEUMUON.MaCuonSach = CUONSACH.MaCuonSach
+		and   CUONSACH.TinhTrangCuonSach = N'Đã mượn'
+        and   PHIEUMUON.NgayMuon like '%'+@NgayMuon+'%'
     END
 END
 GO
 
------------
--- Thêm Phieu Tra
+EXEC TimPhieuMuon'1715','','0'
+go
+select * from PHIEUMUON where NgayMuon = '2020-02-26'
+EXEC TimPhieuMuon'','2020-02-26','1'
+go
+
+-- Các chức năng của Phiếu Trả Sách
 CREATE PROC ThemPhieuTra
     (
     @NgayTra datetime,
-    @MaThe int
-)
-AS
-BEGIN
-    DECLARE @temp INT, @i INT, @j INT, @k INT
-    IF((SELECT COUNT(MaPhieuTra)
-    FROM PHIEUTRA) = 0)
-		SET @temp=0
-	ELSE 
-		SET @temp=( SELECT MAX(CAST(MaPhieuTra AS INT))
-    FROM PHIEUTRA )
-    SET @temp=@temp+1
-    SET @i=@temp
-    INSERT INTO PHIEUTRA
-        (MaPhieuTra,NgayTra,MaThe)
-    VALUES
-        (@i,  @NgayTra, @MaThe);
-		--Relate-CuonSach
-    IF((SELECT COUNT(MaCuonSach)
-    FROM CT_PHIEUTRA) = 0)
-		SET @temp=0
-	ELSE 
-		SET @temp=( SELECT MAX(CAST(MaCuonSach AS INT))
-    FROM CT_PHIEUTRA )
-    SET @temp=@temp+1
-    SET @j=@temp
-    INSERT INTO CT_PHIEUTRA
-        ( MaCuonSach,MaPhieuTra)
-    VALUES
-        (@j, @i);
-		--Relate-NhanVien
-    IF((SELECT COUNT(MaNhanVien)
-    FROM QUANLYTRASACH) = 0)
-		SET @temp=0
-	ELSE 
-		SET @temp=( SELECT MAX(CAST(MaNhanVien AS INT))
-    FROM QUANLYTRASACH )
-    SET @temp=@temp+1
-    SET @k=@temp
-    INSERT INTO QUANLYTRASACH
-        ( MaNhanVien,MaPhieuTra)
-    VALUES
-        (@k, @i);
-END
-GO
--- Sửa Phieu Tra
-CREATE PROC SuaPhieuTra
-    (
-    @Ma int,
-    @NgayTra datetime,
     @MaThe int,
-
 	@MaCuonSach int,
 	@MaNhanVien int
 )
 AS
 BEGIN
-    UPDATE PHIEUTRA
-	SET  NgayTra=@NgayTra, @MaThe=@MaThe
-	WHERE MaPhieuTra = @Ma
-
-	UPDATE CT_PHIEUTRA
-	SET  MaCuonSach=@MaCuonSach
-	WHERE MaPhieuTra = @Ma
-
-	UPDATE QUANLYTRASACH
-	SET  MaNhanVien=@MaNhanVien
-	WHERE MaPhieuTra = @Ma
+    DECLARE @temp INT, @i INT, @j INT, @k INT
+    IF((SELECT COUNT(MaPhieuTra)
+    FROM PHIEUTra) = 0)
+		SET @temp=0
+	ELSE 
+		SET @temp=( SELECT MAX(CAST(MaPhieuTra AS INT))
+    FROM PHIEUTra )
+    SET @temp=@temp+1
+    SET @i=@temp
+    INSERT INTO PHIEUTra
+        (MaPhieuTra,NgayTra,MaThe)
+    VALUES
+        (@i, @NgayTra, @MaThe);
+		--Relate-CuonSach
+    
+    INSERT INTO CT_PHIEUTra
+        ( MaCuonSach,MaPhieuTra)
+    VALUES
+        (@MaCuonSach, @i);
+		--Relate-NhanVien
+    
+    INSERT INTO QUANLYTraSACH
+        ( MaNhanVien,MaPhieuTra)
+    VALUES
+        (@MaNhanVien, @i);
+	UPDATE CUONSACH
+	SET TinhTrangCuonSach = N'Đã mượn'
+	WHERE MaCuonSach = @MaCuonSach
 END
 GO
--- Xóa Phieu Muon
-CREATE PROC XoaPhieuTra
+exec ThemPhieuTra '2020/05/06','17150150', '10001072', '2204'
+go
+
+-- Sửa Phieu Tra
+create PROC SuaPhieuTra
+    (
+    @Ma int,
+    @NgayTra datetime,
+   
+    @MaThe int,
+
+	@MaCuonSach int,
+	@MaNhanVien int,
+	@MaCuonSachNew int
+)
+AS
+BEGIN
+	UPDATE CT_PHIEUTra
+	SET  MaCuonSach=@MaCuonSachNew
+	WHERE MaPhieuTra = @Ma and MaCuonSach = @MaCuonSach
+
+	UPDATE QUANLYTraSACH
+	SET  MaNhanVien=@MaNhanVien
+	WHERE MaPhieuTra = @Ma
+
+    UPDATE PhieuTra
+	SET NgayTra=@NgayTra, MaThe=@MaThe
+	WHERE MaPhieuTra = @Ma
+
+	UPDATE CUONSACH
+	SET TinhTrangCuonSach = N'Đã mượn'
+	WHERE MaCuonSach = @MaCuonSachNew
+
+	UPDATE CUONSACH
+	SET TinhTrangCuonSach = N'Chưa mượn'
+	WHERE MaCuonSach = @MaCuonSach
+END
+GO
+-- Xoa phiếu trả
+create PROC XoaPhieuTra
     (
     @Ma int
 )
 AS
 BEGIN
-    DELETE FROM PHIEUTRA
+
+	DELETE FROM CT_PHIEUTra
     WHERE MaPhieuTra = @Ma
 
-	DELETE FROM CT_PHIEUTRA
+	DELETE FROM QUANLYTraSACH 
     WHERE MaPhieuTra = @Ma
 
-	DELETE FROM QUANLYTRASACH 
+    DELETE FROM PHIEUTra
     WHERE MaPhieuTra = @Ma
+
+	
 END
 GO
+-- Tìm kiếm Phiếu Trả
 
--- Tìm kiếm
-CREATE PROC TimPhieuTra
+create PROC TimPhieuTra
     (
     @MaThe varchar(20),
-    @NgayTra datetime,
+    @NgayTra varchar(20),
     @TypeSearch int
---type == 0: search theo mã thẻ || == 1: seatch theo ngay tra               
 )
 AS
 BEGIN
     IF (@TypeSearch = 0)
 BEGIN
         -- tìm kiếm độc giả theo mã thẻ
-        SELECT PHIEUTRA.MaPhieuTra,NgayTra,MaCuonSach,MaNhanVien
-        FROM PHIEUTRA
-            INNER JOIN CT_PHIEUTRA ON CT_PHIEUTRA.MaPhieuTra = PHIEUTRA.MaPhieuTra
-			INNER JOIN QUANLYTRASACH ON QUANLYTRASACH.MaPhieuTra = PHIEUTRA.MaPhieuTra
-        WHERE PHIEUTRA.MaThe LIKE '%'+@MaThe+'%'
+		
+        select PHIEUTRA.MaPHIEUTRA as 'Mã Phiếu Trả', DOCGIA.MaThe  'Mã Thẻ', PHIEUTRA.NgayTra 'Ngày Trả',
+		CT_PHIEUTRA.MaCuonSach 'Mã Cuốn Sách', QUANLYTRASACH.MaNhanVien 'Mã Nhân Viên' 
+		from PHIEUTRA,CT_PHIEUTRA, QUANLYTRASACH, DOCGIA, CUONSACH
+		where PHIEUTRA.MaThe = DOCGIA.MaThe
+		and   PHIEUTRA.MaPHIEUTRA =  CT_PHIEUTRA.MaPHIEUTRA
+		and   PHIEUTRA.MaPHIEUTRA =  QUANLYTRASACH.MaPHIEUTRA
+		and   CT_PHIEUTRA.MaCuonSach = CUONSACH.MaCuonSach
+		and   CUONSACH.TinhTrangCuonSach = N'Chưa mượn'
+		and PHIEUTra.MaThe LIKE '%'+@MaThe+'%'
+		group by PHIEUTRA.MaPHIEUTRA , DOCGIA.MaThe  , PHIEUTRA.NgayTra ,
+		CT_PHIEUTRA.MaCuonSach , QUANLYTRASACH.MaNhanVien 
+        
 
     END
 ELSE
 BEGIN
-        -- tìm kiếm độc giả có tên @NgayMuon:
-        SELECT PHIEUTRA.MaPhieuTra,NgayTra,MaCuonSach,MaNhanVien
-        FROM PHIEUTRA
-            INNER JOIN CT_PHIEUTRA ON CT_PHIEUTRA.MaPhieuTra = PHIEUTRA.MaPhieuTra
-			INNER JOIN QUANLYTRASACH ON QUANLYTRASACH.MaPhieuTra = PHIEUTRA.MaPhieuTra
-        WHERE PHIEUTRA.MaPhieuTra = @NgayTra
+        -- tìm kiếm độc giả có tên @NgayTra:
+        select PHIEUTRA.MaPHIEUTRA as 'Mã Phiếu Trả', DOCGIA.MaThe  'Mã Thẻ', PHIEUTRA.NgayTra 'Ngày Trả',
+		CT_PHIEUTRA.MaCuonSach 'Mã Cuốn Sách', QUANLYTRASACH.MaNhanVien 'Mã Nhân Viên' 
+		from PHIEUTRA,CT_PHIEUTRA, QUANLYTRASACH, DOCGIA, CUONSACH
+		where PHIEUTRA.MaThe = DOCGIA.MaThe
+		and   PHIEUTRA.MaPHIEUTRA =  CT_PHIEUTRA.MaPHIEUTRA
+		and   PHIEUTRA.MaPHIEUTRA =  QUANLYTRASACH.MaPHIEUTRA
+		and   CT_PHIEUTRA.MaCuonSach = CUONSACH.MaCuonSach
+		and   CUONSACH.TinhTrangCuonSach = N'Chưa mượn'
+		and PHIEUTra.NgayTra LIKE '%'+@NgayTra+'%'
+		group by PHIEUTRA.MaPHIEUTRA , DOCGIA.MaThe  , PHIEUTRA.NgayTra ,
+		CT_PHIEUTRA.MaCuonSach , QUANLYTRASACH.MaNhanVien 
+        
     END
 END
 GO
+
+EXEC TimPhieuTra'','2020','0'
+EXEC TimPhieutra'','2020-03-14','1'
+
+
+-- Thống kê
+-- Thống kê những đọc giả đã mượn sách
+Create view ThongKeDaMuon_View
+as
+SELECT distinct DOCGIA.MaDocGia 'Mã Độc Giả', DOCGIA.HoTenDocGia 'Họ tên Đọc giả', DOCGIA.Lop 'Lớp' FROM DOCGIA 
+JOIN PHIEUMUON ON PHIEUMUON.MaThe = DOCGIA.MaThe
+JOIN PHIEUTRA ON PHIEUMUON.MaThe = PHIEUTRA.MaThe
+JOIN CT_PHIEUMUON ON PHIEUMUON.MaPhieuMuon = CT_PHIEUMUON.MaPhieuMuon
+JOIN CT_PHIEUTRA ON PHIEUTRA.MaPhieuTra = CT_PHIEUTRA.MaPhieuTra
+WHERE CT_PHIEUMUON.MaCuonSach = CT_PHIEUTRA.MaCuonSach
+go
+select * from ThongKeDaMuon_View
+-- Thống kê những đọc giả trả sách đúng hạn
+go
+create view ThongKeTraDungHan_View
+as
+SELECT PHIEUMUON.MaThe 'Mã Thẻ', DOCGIA.HoTenDocGia 'Họ tên Đọc giả', DOCGIA.Lop 'Lớp' 
+FROM PHIEUMUON,PHIEUTRA, DOCGIA
+WHERE PHIEUMUON.MaThe = DOCGIA.MaThe
+AND PHIEUMUON.NgayHanTra = PHIEUTRA.NgayTra
+GROUP BY PHIEUMUON.MaThe, DOCGIA.HoTenDocGia,DOCGIA.Lop
+go
+select *from ThongKeTraDungHan_View
