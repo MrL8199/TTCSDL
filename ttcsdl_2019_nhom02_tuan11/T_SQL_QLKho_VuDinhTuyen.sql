@@ -4,7 +4,7 @@ go
 
 -- Thủ tục Tìm kiếm thông tin nhân viên theo Tên Nhân Viên
 
-alter procedure TKTEN_NHANVIEN(@TenNhanVien nvarchar)
+create procedure TKTEN_NHANVIEN(@TenNhanVien nvarchar)
 as
 begin
 declare @a nvarchar(30)
@@ -16,7 +16,7 @@ end
 
 -- Thủ tục Tìm kiếm thông tin nhân viên theo Mã Nhân Viên
 go
-alter procedure TKMA_NHANVIEN(@MaNhanVien int)
+create procedure TKMA_NHANVIEN(@MaNhanVien int)
 as
 begin
 select * from NHANVIEN
@@ -25,7 +25,7 @@ end
 
 -- thủ tục thêm nhân viên mới 
 go
-alter procedure THEM_NHANVIEN(@MaNhanVien int,@TenNhanVien nvarchar(100), @MaKho int)
+create procedure THEM_NHANVIEN(@MaNhanVien int,@TenNhanVien nvarchar(100), @MaKho int)
 as
 begin
 	INSERT INTO NHANVIEN(MaNhanVien,TenNhanVien,MaKho) 
@@ -34,7 +34,7 @@ end
 
 -- Sửa thông tin nhân viên
 go
-alter procedure UPDATE_NHANVIEN(@MaNhanVien int,@TenNhanVien nvarchar(100),@MaKho int = 0)
+create procedure UPDATE_NHANVIEN(@MaNhanVien int,@TenNhanVien nvarchar(100),@MaKho int = 0)
 as
 begin
 UPDATE NHANVIEN
@@ -44,7 +44,7 @@ end
 
 -- xóa nhân viên có mã thẻ được nhập vào
 go
-alter TRIGGER DEL_NHANVIEN ON NHANVIEN
+create TRIGGER DEL_NHANVIEN ON NHANVIEN
 instead of DELETE
 AS
 BEGIN
@@ -58,7 +58,7 @@ BEGIN
 	
 END
 GO
-alter procedure DELETE_NHANVIEN(@MaNhanVien int)
+create procedure DELETE_NHANVIEN(@MaNhanVien int)
 as
 begin
 delete from NHANVIEN where NHANVIEN.MaNhanVien = @MaNhanVien
@@ -68,7 +68,7 @@ end
 
 -- Tìm kiếm thông tin nhà cung cấp theo Mã nhà cung cấp
 go
-alter procedure TKMA_NCC(@MaNCC int)
+create procedure TKMA_NCC(@MaNCC int)
 as
 begin
 select * from NCC
@@ -77,7 +77,7 @@ end
 
 --- Tìm kiếm thông tin theo tên Nhà cung cấp
 go
-alter procedure TKTEN_NCC(@TenNCC nvarchar(100))
+create procedure TKTEN_NCC(@TenNCC nvarchar(100))
 as
 begin
 declare @b nvarchar(30)
@@ -88,7 +88,7 @@ end
 
 -- thủ tục thêm nhà cung cấp
 go
-alter procedure THEM_NCC(@MaNCC int,@TenNCC nvarchar(100),@DiaChiNCC nvarchar(200), @SDT int)
+create procedure THEM_NCC(@MaNCC int,@TenNCC nvarchar(100),@DiaChiNCC nvarchar(200), @SDT int)
 as
 begin
 	INSERT INTO NCC(MaNCC,TenNCC,DiaChiNCC,SDT_NCC) 
@@ -97,7 +97,7 @@ end
 
 -- Sửa thông tin nhà cung cấp theo Mã NCC 
 go
-alter procedure UPDATE_NCC(@MaNCC int, @TenNCC nvarchar(100), @DiaChiNCC nvarchar(200), @SDT_NCC int)
+create procedure UPDATE_NCC(@MaNCC int, @TenNCC nvarchar(100), @DiaChiNCC nvarchar(200), @SDT_NCC int)
 as
 begin
 UPDATE NCC
@@ -109,7 +109,7 @@ end
 
 -- xóa nhà cung cấp có mã nhà cung cấp được nhập vào
 go
-alter trigger DEL_NCC on NCC
+create trigger DEL_NCC on NCC
 instead of DELETE 
 as
 begin
@@ -119,7 +119,7 @@ begin
 	(select deleted.MaNCC from deleted)
 end
 go
-alter proc DELETE_NCC(@MaNCC int)
+create proc DELETE_NCC(@MaNCC int)
 as
 begin
 	delete from NCC where NCC.MaNCC = @MaNCC
@@ -130,7 +130,7 @@ end
 
 ---- Xem thoong tin chi tiết Nhập kho theo Mã phiếu nhập 
 go
-alter VIEW VIEW_CTPHIEUNHAP AS
+create VIEW VIEW_CTPHIEUNHAP AS
 	SELECT ctpn.MaPN,ctpn.MaCTPN, k.TenKho,k.MaKho, ncc.TenNCC,ncc.MaNCC,ds.MaDauSach, ds.TenDauSach,ctpn.SoLuong
 	FROM CT_PHIEUNHAP as ctpn
 	INNER JOIN KHO as k on k.MaKho = ctpn.MaKho
@@ -138,7 +138,7 @@ alter VIEW VIEW_CTPHIEUNHAP AS
 	INNER JOIN DAUSACH as ds on ds.MaDauSach = ctpn.MaDauSach
 	GROUP BY ctpn.MaPN,ctpn.MaCTPN, k.TenKho, ncc.TenNCC, ds.TenDauSach,ctpn.SoLuong, k.MaKho,ncc.MaNCC,ds.MaDauSach
 go
-alter procedure XEM_CTPHIEUNHAP(@MaPN int)
+create procedure XEM_CTPHIEUNHAP(@MaPN int)
 	as
 	begin
 	select * from VIEW_CTPHIEUNHAP 
@@ -147,7 +147,7 @@ end
 
 -- Tìm kiếm thông tin nhập kho ngày 2020-02-14 
 go
-alter procedure TKNGAY_PHIEUNHAP(@NgayNhap varchar(100))
+create procedure TKNGAY_PHIEUNHAP(@NgayNhap varchar(100))
 as
 begin
  select * from CT_PHIEUNHAP
@@ -159,7 +159,7 @@ end
 
 -- Thủ tục nhập dữ liệu cho Phiếu Nhập Mới 
 go
-alter procedure THEM_CT_PHIEUNHAP(@MaPN int, @MaKho int, @MaNCC int, @SoLuong int, @MaDauSach int)
+create procedure THEM_CT_PHIEUNHAP(@MaPN int, @MaKho int, @MaNCC int, @SoLuong int, @MaDauSach int)
 as
 begin
 	INSERT INTO CT_PHIEUNHAP(MaPN,MaKho,MaNCC,SoLuong,MaDauSach) output inserted.MaCTPN
@@ -169,7 +169,7 @@ end
 
 -- Sửa thông tin CHI TIẾT PHIẾU NHẬP
 go
-alter procedure UPDATE_CTPHIEUNHAP(@MaCTPN int,@MaPN int, @MaKho int, @MaNCC int, @SoLuong int,@MaDauSach int = 0)
+create procedure UPDATE_CTPHIEUNHAP(@MaCTPN int,@MaPN int, @MaKho int, @MaNCC int, @SoLuong int,@MaDauSach int = 0)
 as
 begin
 UPDATE CT_PHIEUNHAP
@@ -179,7 +179,7 @@ end
 
 -- xóa Chi tiết phiếu nhập
 go
-alter procedure DELETE_CTPHIEUNHAP(@MaCTPN int)
+create procedure DELETE_CTPHIEUNHAP(@MaCTPN int)
 as
 begin
 delete from CT_PHIEUNHAP where CT_PHIEUNHAP.MaCTPN = @MaCTPN
@@ -189,7 +189,7 @@ end
 
 ---- xem thông tin chi tiết xuất kho theo Mã Phiếu Xuất 
 go
-alter VIEW VIEW_CTPHIEUXUAT AS
+create VIEW VIEW_CTPHIEUXUAT AS
 	SELECT ctpx.MaPX,ctpx.MaCTPX, k.TenKho, ks.TenKeSach, ds.TenDauSach,ctpx.SoLuong
 	FROM CT_PHIEUXUAT as ctpx
 	INNER JOIN KHO as k on k.MaKho = ctpx.MaKho
@@ -197,7 +197,7 @@ alter VIEW VIEW_CTPHIEUXUAT AS
 	INNER JOIN DAUSACH as ds on ds.MaDauSach = ctpx.MaDauSach
 	GROUP BY ctpx.MaPX,ctpx.MaCTPX, k.TenKho, ks.TenKeSach, ds.TenDauSach,ctpx.SoLuong
 go
-alter procedure XEM_CTPHIEUXUAT(@MaPX int)
+create procedure XEM_CTPHIEUXUAT(@MaPX int)
 	as
 	begin
 	select * from VIEW_CTPHIEUXUAT 
@@ -206,7 +206,7 @@ end
 
 -- Thủ tục tìm kiếm thông tin xuất kho theo ngày 
 go
-alter procedure TKNGAY_PHIEUXUAT(@NgayXuat varchar(100))
+create procedure TKNGAY_PHIEUXUAT(@NgayXuat varchar(100))
 as
 begin
 select * from CT_PHIEUXUAT
@@ -217,7 +217,7 @@ select * from CT_PHIEUXUAT
 
  -- Thủ tục nhập dữ liệu cho Phiếu Xuất Mới 
 go
-alter procedure THEM_CT_PHIEUXUAT(@MaPX int, @MaKho int, @MaKeSach int, @SoLuong int, @MaDauSach int)
+create procedure THEM_CT_PHIEUXUAT(@MaPX int, @MaKho int, @MaKeSach int, @SoLuong int, @MaDauSach int)
 as
 begin
 	INSERT INTO CT_PHIEUXUAT(MaPX,MaKho,MaKeSach,SoLuong,MaDauSach) output inserted.MaCTPX
@@ -228,7 +228,7 @@ go
 
 -- Sửa thông tin CHI TIẾT PHIẾU XUẤT
 go
-alter procedure UPDATE_CTPHIEUXUAT(@MaCTPX int,@MaPX int, @MaKho int, @MaKeSach int, @SoLuong int,@MaDauSach int = 0)
+create procedure UPDATE_CTPHIEUXUAT(@MaCTPX int,@MaPX int, @MaKho int, @MaKeSach int, @SoLuong int,@MaDauSach int = 0)
 as
 begin
 UPDATE CT_PHIEUXUAT
@@ -238,7 +238,7 @@ end
 
 -- xóa Chi tiết phiếu xuất 
 go
-alter procedure DELETE_CTPHIEUXUAT(@MaCTPX int)
+create procedure DELETE_CTPHIEUXUAT(@MaCTPX int)
 as
 begin
 delete from CT_PHIEUXUAT where CT_PHIEUXUAT.MaCTPX = @MaCTPX
@@ -250,7 +250,7 @@ end
 
  -- Tìm kiếm thông tin kiểm kê kho ngày 2020-02-15
  go
-alter VIEW VIEW_PHIEUKIEMKE AS
+create VIEW VIEW_PHIEUKIEMKE AS
 	SELECT pkk.MaPhieuKiemKe,pkk.NgayKiemKe,k.TenKho, pkk.MaKho,SUM(pn.SoLuong) as 'SO LUONG VAO', SUM(px.SoLuong) as 'SO LUONG RA'
 	FROM PHIEUKIEMKE as pkk
 	INNER JOIN KHO as k on k.MaKho = pkk.MaKho
@@ -258,7 +258,7 @@ alter VIEW VIEW_PHIEUKIEMKE AS
 	INNER JOIN CT_PHIEUXUAT as px on k.MaKho = px.MaKho
 	GROUP BY pkk.MaPhieuKiemKe, pkk.NgayKiemKe, pkk.MaKho, k.TenKho
 go
-alter procedure TKNGAY_KIEMKE(@NgayKiemKe date)
+create procedure TKNGAY_KIEMKE(@NgayKiemKe date)
 	as
 	begin
 	select * from VIEW_PHIEUKIEMKE as vkk
@@ -267,7 +267,7 @@ end
 
 ---- Tìm kiếm thông tin kiểm kê theo mã phiếu kiểm kê
 go
-alter procedure TKMA_KIEMKE(@MaPhieuKiemKe int)
+create procedure TKMA_KIEMKE(@MaPhieuKiemKe int)
 	as
 	begin
 	select * from VIEW_PHIEUKIEMKE as vkk
@@ -276,7 +276,7 @@ end
 
  -- Thủ tục nhập dữ liệu cho Phiếu Kiểm Kê mới
  go
-alter procedure THEM_CTPHIEUKIEMKE(@NgayKiemKe date, @MaKho int)
+create procedure THEM_CTPHIEUKIEMKE(@NgayKiemKe date, @MaKho int)
 as
 begin
 	INSERT INTO PHIEUKIEMKE(NgayKiemKe,MaKho) output inserted.MaPhieuKiemKe
@@ -285,7 +285,7 @@ end
 
 -- Sửa thông tin CHI TIẾT PHIẾU Kiểm kê
 go
-alter procedure UPDATE_PHIEUKIEMKE(@MaPhieuKiemKe int, @NgayKiemKe date, @MaKho int)
+create procedure UPDATE_PHIEUKIEMKE(@MaPhieuKiemKe int, @NgayKiemKe date, @MaKho int)
 as
 begin
 UPDATE PHIEUKIEMKE
@@ -295,7 +295,7 @@ end
 
 -- xóa Chi tiết phiếu kiểm kê
 go
-alter procedure DELETE_PHIEUKIEMKE(@MaPhieuKiemKe int)
+create procedure DELETE_PHIEUKIEMKE(@MaPhieuKiemKe int)
 as
 begin
 delete from PHIEUKIEMKE where PHIEUKIEMKE.MaPhieuKiemKe = @MaPhieuKiemKe

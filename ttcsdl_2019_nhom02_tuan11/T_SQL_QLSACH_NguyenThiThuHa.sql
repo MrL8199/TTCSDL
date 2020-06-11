@@ -80,7 +80,7 @@ INSERT INTO CUONSACH (MaCuonSach,TenSach,SoTrang,TinhTrangCuonSach,MaDauSach,MaK
 -- DELETE
 -- Delete all
 -- Xoa Tac gia 
-alter proc xoaTG 
+create proc xoaTG 
 (@maTg int)
 as 
 begin 
@@ -98,7 +98,7 @@ go
 exec xoaTG 18576
 go
 -- Xóa đầu sách có mã NXB thuộc vào NXB cần xóa
-alter Proc deleteDauSach_NXB @maNXB int
+create Proc deleteDauSach_NXB @maNXB int
 as
 begin
 	if exists(select * from DAUSACH where MaNXB=@maNXB)
@@ -122,7 +122,7 @@ begin
 end
 go
  -- Xoa NXB 
- alter proc deleteNXB
+ create proc deleteNXB
 (@maNXB int)
 as
 begin
@@ -140,7 +140,7 @@ exec deleteNXB 552
 go
 
 -- Xoa The Loai
-alter proc deleteTheLoai
+create proc deleteTheLoai
 (@makesach int)
 as 
 begin 
@@ -154,7 +154,7 @@ go
 exec deleteTheLoai 1113
 go
 -- Xoa Cuon Sach 
-alter proc deleteCuonSach
+create proc deleteCuonSach
 (@macuonsach int)
  as
  begin 
@@ -173,7 +173,7 @@ alter proc deleteCuonSach
 	 end
  go
  -- Xóa cuốn sách có mã đâu sách thuộc đầu sách cần xóa
-alter proc delCuonSach_Dausach @mads int
+create proc delCuonSach_Dausach @mads int
 as 
 begin 
  if exists (select *from CUONSACH where MaDauSach=@mads)
@@ -200,7 +200,7 @@ go
 
 go
 -- Xóa Đầu Sách
- alter proc deleteDausach 
+ create proc deleteDausach 
  (@maDausach int)
 as 
 begin
@@ -232,7 +232,7 @@ go
   -- Update 
 -- Update Tac gia
 go
-alter proc update_TG
+create proc update_TG
 (@maTgcu int,@matgmoi int,
 @tentgmoi nvarchar(100))
 as 
@@ -383,7 +383,7 @@ select *from CUONSACH where TenSach like '%'+@tencs+'%'
 go
 -- Thống Kê 
 -- thống kê số lượng sách của mỗi NXB 
-alter function ThongKe1()
+create function ThongKe1()
 returns table 
 return 
 select TenNXB ,count(*) as soluong from NXB as nxb, DAUSACH as ds, CUONSACH as cs
@@ -394,7 +394,7 @@ go
 select *from ThongKe1()
 go
 -- thống kê số lượng sách của mỗi đầu sách
-alter function ThongKe2()
+create function ThongKe2()
 returns table 
 return 
 SELECT TenDauSach, COUNT(*) AS Soluong FROM DAUSACH, CUONSACH 
