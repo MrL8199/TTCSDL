@@ -298,3 +298,20 @@ END
 GO
 EXEC TimVP '',[Mất],'1'
 GO
+
+-- Update trạng thái thẻ thư viện hết hạn
+GO
+
+CREATE PROC Update_Status_IDCard
+AS
+BEGIN
+	UPDATE THETHUVIEN
+	SET TrangThai = N'Hết hạn'
+	WHERE MaThe = (SELECT ttv.MaThe
+	FROM THETHUVIEN ttv
+	WHERE (DATEDIFF(day, GETDATE(), ttv.ngayhethan) <= 0))
+END
+
+GO
+
+EXEC Update_Status_IDCard
